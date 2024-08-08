@@ -1,0 +1,267 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int             @id @default(autoincrement())
+  nis            Int             @unique 
+  nama           String
+  nama_akhir     String?
+  email          String          @unique
+  password       String
+  jenis_kelamin  JENIS_KELAMIN?
+  tanggal_lahir  DateTime?
+  agama          AGAMA?
+  nomor_hp       String?
+  foto_profil    String?
+  alamat         String?
+  user_type      USER_TYPE       @default(SISWA)
+  is_active      Boolean         @default(true)
+  is_delete      Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+  mataPelajaran        Mata_Pelajaran[]
+  kelasMataPelajaran   Kelas_Mata_Pelajaran[] @relation("GuruKelas")
+  createdkelasMataPelajaran   Kelas_Mata_Pelajaran[] @relation("CreatedByKelas")
+  siswaKelas           Siswa_Kelas[] 
+  guruKelas           Guru_Kelas[] 
+  siswa           Pengumpulan_Tugas[] 
+  kehadiranSiswa           Kehadiran[] 
+  Postingan           Postingan[] 
+}
+
+
+enum AGAMA {
+  ISLAM
+  KRISTEN
+  KATHOLIK
+  HINDU
+  BUDHA
+  KONGHUCU
+}
+enum JENIS_KELAMIN {
+  LAKI
+  PEREMPUAN
+}
+enum USER_TYPE {
+  ADMIN
+  SISWA
+  GURU
+}
+
+model Kelas {
+  id                   Int             @id @default(autoincrement())
+  nama                 String
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now()) 
+  kelasMataPelajaran   Kelas_Mata_Pelajaran[]
+  siswaKelas           Siswa_Kelas[]
+  guruKelas           Guru_Kelas[]
+  jadwal           Jadwal[]
+  postingan          Postingan[]
+  tugas          Tugas[]
+  materi          Materi[]
+  teks          Teks[]
+  kehadiranKelas         Kehadiran[]
+}
+
+model Siswa_Kelas {
+  id                   Int             @id @default(autoincrement()) 
+  siswa                User @relation(fields: [siswa_id], references: [id] ,  onDelete: Cascade)
+  siswa_id             Int  
+  kelas                Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id             Int    
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now())
+}
+
+model Guru_Kelas {
+  id                   Int             @id @default(autoincrement()) 
+  guru                User @relation(fields: [guru_id], references: [id],  onDelete: Cascade)
+  guru_id             Int  
+  kelas                Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id             Int    
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now())
+}
+
+model Mata_Pelajaran {
+  id             Int             @id @default(autoincrement())
+  nama           String
+  created   User @relation(fields: [created_by_id], references: [id],  onDelete: Cascade)
+  created_by_id Int  
+  is_active      Boolean         @default(true)
+  is_delete      Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+  mata_pelajaran  Kelas_Mata_Pelajaran[]
+  jadwal  Jadwal[]
+  postingan  Postingan[]
+  tugas  Tugas[]
+  materi  Materi[]
+  teks  Teks[]
+  kehadiranMataPelajaran  Kehadiran[]
+}
+
+model Kelas_Mata_Pelajaran {
+  id             Int             @id @default(autoincrement()) 
+  kelas   Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id Int  
+  mata_pelajaran   Mata_Pelajaran @relation(fields: [mata_pelajaran_id], references: [id],  onDelete: Cascade)
+  mata_pelajaran_id Int  
+  guru           User @relation(name: "GuruKelas", fields: [guru_id], references: [id], onDelete: Cascade)
+  guru_id        Int
+  created        User @relation(name: "CreatedByKelas", fields: [created_by_id], references: [id], onDelete: Cascade)
+  created_by_id  Int
+  is_active      Boolean         @default(true)
+  is_delete      Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+}
+
+model Minggu {
+  id                   Int             @id @default(autoincrement())
+  nama                 String
+  harikalendar           Int          
+  minggu  Jadwal[]
+}
+
+model Jadwal {
+  id             Int             @id @default(autoincrement()) 
+  kelas   Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id Int  
+  mata_pelajaran   Mata_Pelajaran @relation(fields: [mata_pelajaran_id], references: [id],  onDelete: Cascade)
+  mata_pelajaran_id Int  
+  minggu   Minggu @relation(fields: [minggu_id], references: [id],  onDelete: Cascade)
+  minggu_id Int  
+  waktu_mulai String
+  waktu_selesai String
+  ruang String
+  is_active      Boolean         @default(true)
+  is_delete      Boolean         @default(false)
+  createdAt      DateTime        @default(now())
+  kehadiranJadwal  Kehadiran[]
+}
+
+model Postingan {
+  id                   Int             @id @default(autoincrement())
+  kelas   Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id Int  
+  mata_pelajaran   Mata_Pelajaran @relation(fields: [mata_pelajaran_id], references: [id],  onDelete: Cascade)
+  mata_pelajaran_id Int  
+  guru           User @relation(fields: [guru_id], references: [id], onDelete: Cascade)
+  guru_id        Int
+  nama                 String
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now()) 
+  postinganTugas  Tugas[]
+  postinganMateri  Materi[]
+  postinganTeks  Teks[]
+}
+
+model Tugas {
+  id             Int             @id @default(autoincrement()) 
+  kelas   Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id Int  
+  mata_pelajaran   Mata_Pelajaran @relation(fields: [mata_pelajaran_id], references: [id],  onDelete: Cascade)
+  mata_pelajaran_id Int  
+  postingan   Postingan @relation(fields: [postingan_id], references: [id],  onDelete: Cascade)
+  postingan_id Int  
+  judul_tugas String
+  tugas_tanggal String
+  pengumpulan_mulai String
+  pengumpulan_selesai String
+  dokumen_tugas String
+  deskripsi_tugas String
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now()) 
+  pengumpulanTugas  Pengumpulan_Tugas[]
+}
+
+model Materi {
+  id             Int             @id @default(autoincrement()) 
+  kelas   Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id Int  
+  mata_pelajaran   Mata_Pelajaran @relation(fields: [mata_pelajaran_id], references: [id],  onDelete: Cascade)
+  mata_pelajaran_id Int  
+  postingan   Postingan @relation(fields: [postingan_id], references: [id],  onDelete: Cascade)
+  postingan_id Int  
+  judul_materi String 
+  dokumen_materi String
+  deskripsi_materi String
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now()) 
+}
+
+model Teks {
+  id             Int             @id @default(autoincrement()) 
+  kelas   Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id Int  
+  mata_pelajaran   Mata_Pelajaran @relation(fields: [mata_pelajaran_id], references: [id],  onDelete: Cascade)
+  mata_pelajaran_id Int  
+  postingan   Postingan @relation(fields: [postingan_id], references: [id],  onDelete: Cascade)
+  postingan_id Int  
+  judul_teks String 
+  dokumen_teks String
+  deskripsi_teks String
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now()) 
+}
+
+
+model Pengumpulan_Tugas {
+  id             Int             @id @default(autoincrement())
+  tugas   Tugas @relation(fields: [tugas_id], references: [id],  onDelete: Cascade)
+  tugas_id Int  
+  siswa   User @relation(fields: [siswa_id], references: [id],  onDelete: Cascade)
+  siswa_id Int  
+  deskripsi_pengumpulan_tugas String?
+  dokumen_pengumpulan_tugas String?
+  pengumpulan_telat Boolean         @default(false)
+  nilai Int?
+  catatan String?
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now()) 
+}
+
+model Kehadiran {
+  id             Int             @id @default(autoincrement())
+  kelas   Kelas @relation(fields: [kelas_id], references: [id],  onDelete: Cascade)
+  kelas_id Int   
+  mata_pelajaran   Mata_Pelajaran @relation(fields: [mata_pelajaran_id], references: [id],  onDelete: Cascade)
+  mata_pelajaran_id Int  
+  siswa   User @relation(fields: [siswa_id], references: [id],  onDelete: Cascade)
+  siswa_id Int  
+  jadwal   Jadwal @relation(fields: [jadwal_id], references: [id],  onDelete: Cascade)
+  jadwal_id Int  
+  tanggal_kehadiran String
+  kehadiran_tipe KEHADIRAN_TYPE @default(H) 
+  dibuat_oleh Int
+  is_active            Boolean         @default(true)
+  is_delete            Boolean         @default(false)
+  createdAt            DateTime        @default(now()) 
+}
+
+enum KEHADIRAN_TYPE {
+  H
+  TH
+  S
+  I
+  T
+}

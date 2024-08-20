@@ -10434,6 +10434,9 @@ fieldset:disabled .btn {
 .fs-6 {
   font-size: 1rem !important;
 }
+.fs-7 {
+  font-size: .75rem !important;
+}
 
 .fst-italic {
   font-style: italic !important;
@@ -27158,3 +27161,18 @@ pre[class*="language-"] {
   opacity: 1;
 }
  
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hover-text-indigo:hover{
+  color: var(--bs-accordion-active-color) !important;
+}
+
+.text-collapse-300{
+  width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

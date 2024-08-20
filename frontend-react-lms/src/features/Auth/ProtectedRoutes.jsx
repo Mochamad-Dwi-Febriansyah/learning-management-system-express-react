@@ -2,6 +2,7 @@ import { Navigate, Outlet } from "react-router-dom"
 import { getRoleFromToken } from "../../utils/auth.js"
 import PropTypes from "prop-types";
 import Cookies from 'js-cookie';
+import Forbidden from "./Forbidden.jsx";
 
 const ProtectedRoutes = ({requiredRole}) => {
     const token = Cookies.get('token')
@@ -16,7 +17,7 @@ const ProtectedRoutes = ({requiredRole}) => {
     }
 
     if(requiredRole && role !== requiredRole){
-        return <Navigate to='/unauthorized' />
+        return <Forbidden />
     }
 
     return <Outlet/>

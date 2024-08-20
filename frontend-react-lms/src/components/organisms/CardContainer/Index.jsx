@@ -7,7 +7,7 @@ const CardContainer = ({children, title, textColor}) => {
             <div className="py-1 px-3">
               <h6 className={`font-weight-bolder ${textColor} mb-0`}>{title}</h6>
             </div>
-            <div className="row mb-4">
+            <div className="row mb-4"> 
               {children}
             </div> 
         </div> 

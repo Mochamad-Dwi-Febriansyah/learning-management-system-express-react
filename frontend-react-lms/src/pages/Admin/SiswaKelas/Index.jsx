@@ -7,8 +7,8 @@ import { useFetchSiswaKelas } from "../../../features/Admin/SiswaKelas/useFetchS
 import { useDeleteSiswaKelas } from "../../../features/Admin/SiswaKelas/useDeleteSiswaKelas.js";
 import { useCreateSiswaKelas } from "../../../features/Admin/SiswaKelas/useCreateSiswaKelas.js";
 import { useEditSiswaKelas } from "../../../features/Admin/SiswaKelas/useEditSiswaKelas.js";
-import { useFetchKelas } from "../../../features/Admin/Kelas/useFetchKelas.js";
-import { useFetchGuru } from "../../../features/Admin/Guru/useFetchGuru.js";
+import { useFetchKelasMataPelajaran } from "../../../features/Admin/KelasMataPelajaran/useFetchKelasMataPelajaran.js";
+import { useFetchSiswa } from "../../../features/Admin/Siswa/useFetchSiswa.js";
 
 const SiswaKelas = () => {
     const [show, setShow] = useState(false);
@@ -30,20 +30,20 @@ const SiswaKelas = () => {
     const formik = useFormik({
         initialValues: {
             id: "", 
-            kelas_id: "",
+            kelas_mata_pelajaran_id: "",
             siswa_id: "", 
             is_active: "",
             is_delete: "",
         },
         onSubmit: () => {
             console.log("dsfsdfdfd")
-            const { id, kelas_id, siswa_id,  is_active, is_delete } = formik.values
+            const { id, kelas_mata_pelajaran_id, siswa_id,  is_active, is_delete } = formik.values
             console.log(formik.values)
 
             if (id) {
                 editSiswaKelas({
                     id,
-                    kelas_id: parseInt(kelas_id),
+                    kelas_mata_pelajaran_id: parseInt(kelas_mata_pelajaran_id),
                     siswa_id: parseInt(siswa_id), 
                     is_active: is_active === "true",
                     is_delete: is_delete === "true",
@@ -52,20 +52,20 @@ const SiswaKelas = () => {
                 console.log("sdfdsf")
                 createSiswaKelas({
                     id,
-                    kelas_id: parseInt(kelas_id),
+                    kelas_mata_pelajaran_id: parseInt(kelas_mata_pelajaran_id),
                     siswa_id: parseInt(siswa_id), 
                     is_active: is_active === "true",
                     is_delete: is_delete === "true",
                 })
             }
             formik.setFieldValue("id", 0)
-            formik.setFieldValue("kelas_id", "")
+            formik.setFieldValue("kelas_mata_pelajaran_id", "")
             formik.setFieldValue("siswa_id", "") 
             formik.setFieldValue("is_active", "")
             formik.setFieldValue("is_delete", "")
         },
         validationSchema: yup.object().shape({
-            kelas_id: yup.string().required(),
+            kelas_mata_pelajaran_id: yup.string().required(),
             siswa_id: yup.string().required(), 
             is_active: yup.string().required(),
             is_delete: yup.string().required(),
@@ -122,8 +122,8 @@ const SiswaKelas = () => {
     })
     const { data, error, isLoading: siswaKelasIsLoading, refetch: refetchSiswaKelas } = useFetchSiswaKelas();
 
-    const { data : dataKelas } = useFetchKelas();
-    const { data : dataGuru  } = useFetchGuru();
+    const { data : dataKelasMataPelajaran } = useFetchKelasMataPelajaran();
+    const { data : dataSiswa  } = useFetchSiswa();
     // console.log(dataKelas)
 
 
@@ -137,8 +137,8 @@ const SiswaKelas = () => {
 
     const onEditClick = (siswaKelas) => {
         formik.setFieldValue("id", siswaKelas.id)
-        formik.setFieldValue("kelas_id", siswaKelas.kelas_id)
-        formik.setFieldValue("guru_id", siswaKelas.guru_id) 
+        formik.setFieldValue("kelas_mata_pelajaran_id", siswaKelas.kelas_mata_pelajaran_id)
+        formik.setFieldValue("siswa_id", siswaKelas.siswa_id) 
         formik.setFieldValue("is_active", siswaKelas.is_active ? "true" : "false");
         formik.setFieldValue("is_delete", siswaKelas.is_delete ? "true" : "false");
 
@@ -155,8 +155,9 @@ const SiswaKelas = () => {
             return (
                 <tr key={siswaKelas.id}>
                     <td><p className="text-xs text-dark mb-0">{siswaKelas.nama_kelas}</p></td>
-                    <td><p className="text-xs text-dark mb-0">{siswaKelas.nama_siswa}</p></td>
+                    <td><p className="text-xs text-dark mb-0">{siswaKelas.nama_mata_pelajaran}</p></td>
                     <td><p className="text-xs text-dark mb-0">{siswaKelas.nis_siswa}</p></td>
+                    <td><p className="text-xs text-dark mb-0">{siswaKelas.nama_siswa}</p></td> 
                     <td className="align-middle  text-sm">
                         {siswaKelas.is_active === true ? (
                             <span className="badge badge-sm bg-gradient-success">Active</span>
@@ -191,10 +192,13 @@ const SiswaKelas = () => {
                                             Kelas
                                         </th>
                                         <th className="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">
-                                            Siswa
+                                            Mata Pelajaran
                                         </th>
                                         <th className="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">
                                             NIS
+                                        </th>
+                                        <th className="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">
+                                            Siswa
                                         </th>
                                         <th className="text-uppercase text-dark text-xxs font-weight-bolder opacity-7">
                                             Is Active
@@ -226,10 +230,10 @@ const SiswaKelas = () => {
                                                         <div className="col">
                                                             <label className="form-label">Kelas</label>
                                                             {/* <input type="text" className={`form-control input-no-focus border-utama ${formik.errors.kelas_id ? 'border-red' : ''}`} placeholder="Nama Kelas" aria-label="Nama Kelas" name="kelas_id" onChange={handleFormInput} value={formik.values.kelas_id} /> */}
-                                                            <select id="inputState" className={`form-control input-no-focus border-utama ${formik.errors.kelas_id ? 'border-red' : ''}`} name="kelas_id" onChange={handleFormInput} value={formik.values.kelas_id} >
+                                                            <select id="inputState" className={`form-control input-no-focus border-utama ${formik.errors.kelas_mata_pelajaran_id ? 'border-red' : ''}`} name="kelas_mata_pelajaran_id" onChange={handleFormInput} value={formik.values.kelas_mata_pelajaran_id} >
                                                             <option>Choose...</option>
-                                                                {dataKelas?.data.data.map((kelas) => (
-                                                                    <option key={kelas.id} value={kelas.id}>{kelas.nama}</option>  
+                                                                {dataKelasMataPelajaran?.data.data.map((kelas_mata_pelajaran) => (
+                                                                    <option key={kelas_mata_pelajaran.id} value={kelas_mata_pelajaran.id}>{kelas_mata_pelajaran.nama_kelas}-{kelas_mata_pelajaran.nama_guru}-{kelas_mata_pelajaran.nama_mata_pelajaran}</option>  
                                                                 ))}
                                                             </select>
                                                             {formik.errors.kelas_id ? (
@@ -237,20 +241,24 @@ const SiswaKelas = () => {
                                                             ) : backendErrors.kelas_id ? (
                                                                 <span className="text-danger fs-kecil">{backendErrors.kelas_id}</span>
                                                             ) : null}
-                                                        </div>
-                                                        <div className="col">
-                                                            <label className="form-label">Guru</label>
+                                                        </div> 
+                                                    </div>
+                                                </div>
+                                                <div className="mb-3">
+                                                    <div className="row g-3">
+                                                    <div className="col">
+                                                            <label className="form-label">Siswa</label>
                                                             {/* <input type="text" className={`form-control input-no-focus border-utama ${formik.errors.guru_id ? 'border-red' : ''}`} placeholder="Nama Kelas" aria-label="Nama Kelas" name="guru_id" onChange={handleFormInput} value={formik.values.created_by_id} /> */}
-                                                            <select id="inputState" className={`form-control input-no-focus border-utama ${formik.errors.guru_id ? 'border-red' : ''}`} name="guru_id" onChange={handleFormInput} value={formik.values.guru_id} >
+                                                            <select id="inputState" className={`form-control input-no-focus border-utama ${formik.errors.siswa_id ? 'border-red' : ''}`} name="siswa_id" onChange={handleFormInput} value={formik.values.siswa_id} >
                                                             <option>Choose...</option>
-                                                                {dataGuru?.data.data.map((guru) => (
-                                                                    <option key={guru.id} value={guru.id}>{guru.nama}</option>  
+                                                                {dataSiswa?.data.data.map((siswa) => (
+                                                                    <option key={siswa.id} value={siswa.id}>{siswa.nama}</option>  
                                                                 ))}
                                                             </select>
-                                                            {formik.errors.guru_id ? (
-                                                                <span className="text-danger fs-kecil">{formik.errors.guru_id}</span>
-                                                            ) : backendErrors.guru_id ? (
-                                                                <span className="text-danger fs-kecil">{backendErrors.guru_id}</span>
+                                                            {formik.errors.siswa_id ? (
+                                                                <span className="text-danger fs-kecil">{formik.errors.siswa_id}</span>
+                                                            ) : backendErrors.siswa_id ? (
+                                                                <span className="text-danger fs-kecil">{backendErrors.siswa_id}</span>
                                                             ) : null}
                                                         </div>
                                                     </div>

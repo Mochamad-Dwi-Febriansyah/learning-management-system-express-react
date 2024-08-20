@@ -1,6 +1,12 @@
 import ListSidebarItem from "../../../atoms/ListSidebarItem/Index.jsx"
+import { ALogout } from '../../../../features/Auth/useLogout.js'; // Import fungsi logout Anda
 
 const SiswaListSidebar = () => {
+    const logoutMutation = ALogout(); // Panggil hook logout
+  
+    const handleLogout = () => {
+      logoutMutation.mutate(); // Jalankan fungsi logout ketika tombol di-klik
+    };
     return (
         <> 
         <ul className="navbar-nav">
@@ -11,7 +17,9 @@ const SiswaListSidebar = () => {
                 </h6>
             </li>
             <ListSidebarItem linkTo="/profile" Icon="ni ni-single-02" Text="Profile" />
-            <ListSidebarItem linkTo="/logout" Icon="fas fa-sign-out-alt" Text="Logout" />
+            <div onClick={handleLogout}>
+                <ListSidebarItem  Icon="fas fa-sign-out-alt" Text="Logout" />
+            </div> 
         </ul>
         </>
     )

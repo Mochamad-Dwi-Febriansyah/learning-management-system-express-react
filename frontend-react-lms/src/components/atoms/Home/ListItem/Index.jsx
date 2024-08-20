@@ -4,7 +4,7 @@ const ListItem = ({text, linkTo}) => {
     return (
         <>
              <li className="nav-item">
-                <a className="nav-link fw-medium" aria-current="page" href={linkTo}>
+                <a className="nav-link fw-medium ps-0" aria-current="page" href={linkTo}>
                   {text}
                 </a>
               </li>

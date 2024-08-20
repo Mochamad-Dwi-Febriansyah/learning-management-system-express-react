@@ -22,7 +22,7 @@ const ListSidebarItem = ({linkTo, Icon, Text}) => {
 };
 
 ListSidebarItem.propTypes = {
-    linkTo: PropTypes.string.isRequired,
+    linkTo: PropTypes.string,
     Icon:PropTypes.string.isRequired,
     Text: PropTypes.string.isRequired,
 }

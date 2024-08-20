@@ -1,10 +1,10 @@
 import CardContainer from "../../organisms/CardContainer/Index"
 import Card from "../../atoms/Card/Index" 
-import { useFetchClassMe } from "../../../features/Admin/KelasMataPelajaran/useFetchClassMe";
+import { useFetchClassMe } from "../../../features/Guru/KelasMataPelajaran/useFetchClassMe.js";
 
 const GuruDashboard = () => {
     const { data } = useFetchClassMe()
-
+    // console.log(data)
     const bgIcons = [
         "bg-gradient-danger",
         "bg-gradient-success",
@@ -31,7 +31,7 @@ const GuruDashboard = () => {
         return data?.data.data.map((kelas) => {    
             return (
                 <div className="col-xl-4 col-sm-6 mb-xl-0 mb-4" key={kelas.id}>
-                <Card key={kelas.id} title={kelas.nama_kelas} kelas_id={kelas.kelas_id} mata_pelajaran_id={kelas.mata_pelajaran_id} subtitle={kelas.nama_mata_pelajaran} bgIcon={getRandomBgIcon()} icon={getRandomIcon()} linkTo={`/g-mata-pelajaran/${kelas.mata_pelajaran_id}`}/>
+                <Card key={kelas.id} title={kelas.nama_kelas} kelas_id={kelas.kelas_id} mata_pelajaran_id={kelas.mata_pelajaran_id} guru_id={kelas.guru_id} subtitle={kelas.nama_mata_pelajaran} bgIcon={getRandomBgIcon()} icon={getRandomIcon()} linkTo={`/g-kelas/${kelas.kelas_id}/g-mata-pelajaran/${kelas.mata_pelajaran_id}`}/>
                 </div>
             )
          
@@ -40,11 +40,9 @@ const GuruDashboard = () => {
 
     
     return (
-        <>  
+        <>   
         <CardContainer title="Daftar Mata Pelajaran"  textColor='text-white'> 
-        {renderContent()}
-              {/* <Card title="Rekayasa Perangkat Lunak" value="300" bgIcon="bg-gradient-success" icon="ni ni-world" linkTo="/pelajaran"/>
-              <Card title="Cyber Core" value="300" bgIcon="bg-gradient-primary" icon="ni ni-world" linkTo="/pelajaran"/>  */}
+            {renderContent()} 
         </CardContainer>  
         </>
     )

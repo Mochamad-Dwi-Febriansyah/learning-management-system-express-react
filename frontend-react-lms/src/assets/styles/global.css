@@ -133,8 +133,13 @@
 }
 .border-red {
     border-color: red !important;
+    /* color: rgba(52, 71, 103, 0.968); */
   }
   
   .input-no-focus:focus {
     box-shadow: none; /* Menghapus shadow saat fokus */
   }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=UTF8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(52, 71, 103, 0.968)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}

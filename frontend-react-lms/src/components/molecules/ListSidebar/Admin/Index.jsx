@@ -1,8 +1,14 @@
 import ListSidebarItem from "../../../atoms/ListSidebarItem/Index.jsx"
 import { useState, useEffect,useCallback  } from 'react';
 import { useLocation } from 'react-router-dom';
+import { ALogout } from '../../../../features/Auth/useLogout.js'; // Import fungsi logout Anda
 
 const AdminListSidebar = () => {
+    const logoutMutation = ALogout(); // Panggil hook logout
+  
+    const handleLogout = () => {
+      logoutMutation.mutate(); // Jalankan fungsi logout ketika tombol di-klik
+    };
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -49,7 +55,7 @@ const AdminListSidebar = () => {
                             <ListSidebarItem linkTo="/kelola-mata-pelajaran" Icon="ni ni-calendar-grid-58" Text="Mata Pelajaran" />
                             <ListSidebarItem linkTo="/kelola-kelas-mata-pelajaran" Icon="ni ni-calendar-grid-58" Text="Kelas Mata Pelajaran" />
                             <ListSidebarItem linkTo="/kelola-siswa-kelas" Icon="ni ni-calendar-grid-58" Text="Siswa Kelas" />
-                            <ListSidebarItem linkTo="/kelola-wali-kelas" Icon="ni ni-calendar-grid-58" Text="Wali Kelas" />
+                            {/* <ListSidebarItem linkTo="/kelola-wali-kelas" Icon="ni ni-calendar-grid-58" Text="Wali Kelas" /> */}
                         </ul>
                     </div>
                 </li>
@@ -58,8 +64,10 @@ const AdminListSidebar = () => {
                         Account pages
                     </h6>
                 </li>
-                <ListSidebarItem linkTo="/profile" Icon="ni ni-single-02" Text="Profile" />
-                <ListSidebarItem linkTo="/logout" Icon="fas fa-sign-out-alt" Text="Logout" />
+                <ListSidebarItem linkTo="/profile" Icon="ni ni-single-02" Text="Profile" /> 
+                <div onClick={handleLogout}>
+                <ListSidebarItem  Icon="fas fa-sign-out-alt" Text="Logout" />
+            </div>
                
             </ul>
         </>

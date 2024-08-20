@@ -1,6 +1,9 @@
 import ManageLayout from "../../components/layouts/ManageLayout"
+import { useFetchProfile } from "../../features/Auth/Setting/useFetchProfile.js";
 
 const Profile = () => {
+
+  const { data }  = useFetchProfile() 
     return (
         <>
         <ManageLayout>
@@ -10,8 +13,8 @@ const Profile = () => {
             <div className="row gx-4">
               <div className="col-auto">
                 <div className="avatar avatar-xl position-relative">
-                  <img
-                    src="../assets/img/team-1.jpg"
+                  <img 
+                    src={data?.data.data.foto_profil}
                     alt="profile_image"
                     className="w-100 border-radius-lg shadow-sm"
                   />
@@ -19,9 +22,9 @@ const Profile = () => {
               </div>
               <div className="col-auto my-auto">
                 <div className="h-100">
-                  <h5 className="mb-1">Sayo Kravits</h5>
+                  <h5 className="mb-1">{data?.data.data.nama}</h5>
                   <p className="mb-0 font-weight-bold text-sm">
-                    Public Relations
+                  {data?.data.data.email}
                   </p>
                 </div>
               </div> 
@@ -34,75 +37,45 @@ const Profile = () => {
             <div className="card-header pb-0">
               <div className="d-flex align-items-center">
                 <p className="mb-0">Edit Profile</p>
-                <button className="btn btn-primary btn-sm ms-auto">Settings</button>
+                <button className="btn btn-primary btn-sm ms-auto"><i className="fas fa-pencil-alt text-white" aria-hidden="true"></i></button>
               </div>
             </div>
             <div className="card-body">
-              <p className="text-uppercase text-sm">User Information</p>
+              <p className="text-uppercase text-sm">Informasi User</p>
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">Username</label>
-                    <input className="form-control" type="text" value="lucky.jesse" />
+                    <label htmlFor="example-text-input" className="form-control-label">Nama</label>
+                    {/* <input className="form-control" type="text" value={data?.data.data.nama} /> */}
+                    <p className="border rounded-3 p-2 fs-6 mb-0">{data?.data.data.nama} {data?.data.data.nama_akhir}</p>
                   </div>
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">Email address</label>
-                    <input className="form-control" type="email" value="jesse@example.com" />
+                    <label htmlFor="example-text-input" className="form-control-label">NIS</label>
+                    {/* <input className="form-control" type="text" value={data?.data.data.nama_akhir} /> */}
+                    <p className="border rounded-3 p-2 fs-6 mb-0">{data?.data.data.nis}</p>
                   </div>
-                </div>
+                </div> 
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">First name</label>
-                    <input className="form-control" type="text" value="Jesse" />
+                    <label htmlFor="example-text-input" className="form-control-label">Email</label>
+                    {/* <input className="form-control" type="email" value={data?.data.data.email} /> */}
+                    <p className="border rounded-3 p-2 fs-6 mb-0">{data?.data.data.email}</p>
                   </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">Last name</label>
-                    <input className="form-control" type="text" value="Lucky" />
-                  </div>
-                </div>
+                </div> 
               </div>
               <hr className="horizontal dark"/>
-              <p className="text-uppercase text-sm">Contact Information</p>
+              <p className="text-uppercase text-sm">Informasi Kontak</p>
               <div className="row">
                 <div className="col-md-12">
                   <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">Address</label>
-                    <input className="form-control" type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"/>
+                    <label htmlFor="example-text-input" className="form-control-label">Alamat</label>
+                    {/* <input className="form-control" type="text" value={data?.data.data.alamat}/> */}
+                    <p className="border rounded-3 p-2 fs-6 mb-0">{data?.data.data.alamat}</p>
                   </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">City</label>
-                    <input className="form-control" type="text" value="New York"/>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">Country</label>
-                    <input className="form-control" type="text" value="United States"/>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">Postal code</label>
-                    <input className="form-control" type="text" value="437300"/>
-                  </div>
-                </div>
-              </div>
-              <hr className="horizontal dark"/>
-              <p className="text-uppercase text-sm">About me</p>
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="form-group">
-                    <label htmlFor="example-text-input" className="form-control-label">About me</label>
-                    <input className="form-control" type="text" value="A beautiful Dashboard for Bootstrap 5. It is Free and Open Source."/>
-                  </div>
-                </div>
-              </div>
+                </div> 
+              </div> 
             </div>
           </div>
         </div>

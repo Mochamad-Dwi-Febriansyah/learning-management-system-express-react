@@ -15,8 +15,14 @@ const ManageLayout = ({ children }) => {
     <>
       <div className="bg-nature min-height-230 bg-primary position-absolute w-100"></div>
       <Sidebar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <main className="main-content position-relative border-radius-lg">
-        <Navbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <main className="main-content position-relative border-radius-lg"> 
+        <Navbar
+                    isSidebarOpen={isSidebarOpen}
+                    toggleSidebar={toggleSidebar}
+                    breadcrumb={[ 
+                        { label: 'Dashboard', href: '/dashboard' }
+                    ]}
+                />
         <div className="container-fluid py-4"> 
         <div className="row mb-4">
         <div className="col-12">

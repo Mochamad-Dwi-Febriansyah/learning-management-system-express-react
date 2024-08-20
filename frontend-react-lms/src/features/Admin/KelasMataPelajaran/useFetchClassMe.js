@@ -7,7 +7,7 @@ export const useFetchClassMe = () => {
         queryKey: ['waliKelas'],
         queryFn: async () => {
             const token = Cookies.get('token')
-            const waliKelasResponse = await axiosInstance.get('/kelas-mata-pelajaran/me', {
+            const waliKelasResponse = await axiosInstance.get('/kelas-mata-pelajaran/kelas-mata-pelajaran-me', {
                 headers: {
                     Authorization: `Bearer ${token}`, // Tambahkan token ke header
                 },

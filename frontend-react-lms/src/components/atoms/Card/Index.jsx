@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const Card = ({ title,subtitle, value, bgIcon, icon, linkTo, kelas_id, mata_pelajaran_id  }) => {
+const Card = ({ title,subtitle, value, bgIcon, icon, linkTo, kelas_id, mata_pelajaran_id, guru_id  }) => {
   const handleNavLinkClick = () => {
     const kelasData = {
       kelas_id,
-      mata_pelajaran_id
+      mata_pelajaran_id,
+      guru_id
     };
     sessionStorage.setItem('kelas_data', JSON.stringify(kelasData));
   };
@@ -25,9 +26,9 @@ const Card = ({ title,subtitle, value, bgIcon, icon, linkTo, kelas_id, mata_pela
                     <h5 className="font-weight-bolder mb-0">{value}</h5>
                   </div>
                 </div>
-                <div className="col-4 text-end">
+                <div className="col-4">
                   <div
-                    className={`icon icon-shape ${bgIcon} shadow-primary text-center rounded-circle`}
+                    className={`icon icon-shape ${bgIcon} shadow-primary text-center rounded-circle mx-auto`}
                   >
                     <i
                       className={`${icon} text-lg opacity-10`}
@@ -52,7 +53,8 @@ Card.propTypes = {
   icon: PropTypes.string,
   linkTo: PropTypes.string,
   kelas_id: PropTypes.number,
-  mata_pelajaran_id: PropTypes.number 
+  mata_pelajaran_id: PropTypes.number,
+  guru_id: PropTypes.number 
 };
 
 export default Card;

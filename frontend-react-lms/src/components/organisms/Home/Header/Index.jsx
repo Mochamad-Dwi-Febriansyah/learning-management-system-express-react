@@ -24,6 +24,7 @@ const Header = ({children}) => {
         </Button>
         <div className="collapse navbar-collapse " id="navbarSupportedContent">
           <List />
+          <div className="px-0 py-2"> 
           <Button
             className="btn btn-warning text-light rounded-pill fw-medium"
             type="button"
@@ -32,6 +33,7 @@ const Header = ({children}) => {
           >
             Login
           </Button>
+          </div>
           <div
             className="modal fade"
             id="exampleModal"
